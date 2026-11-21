@@ -1,0 +1,66 @@
+### Base URL variable
+@baseUrl = http://localhost:3000
+
+### 1. Root route
+GET {{baseUrl}}/
+
+### 2. GET all books
+GET {{baseUrl}}/api/books
+
+### 3. Filter books by author (case-insensitive: 'kalam')
+GET {{baseUrl}}/api/books/filter?author=kalam
+
+### 4. Filter books by author (no match -> empty array)
+GET {{baseUrl}}/api/books/filter?author=Shakespeare
+
+### 5. GET book by ID (Valid)
+GET {{baseUrl}}/api/books/101
+
+### 6. GET book by ID (Not Found)
+GET {{baseUrl}}/api/books/999
+
+### 7. POST a new book (Valid sample from exam)
+POST {{baseUrl}}/api/books
+Content-Type: application/json
+
+{
+  "title": "The Discovery of India",
+  "author": "Jawaharlal Nehru",
+  "genre": "History",
+  "publishedYear": 1946,
+  "available": true
+}
+
+### 8. POST a new book (Invalid - missing fields)
+POST {{baseUrl}}/api/books
+Content-Type: application/json
+
+{
+  "title": "Incomplete Book"
+}
+
+### 9. PUT update a book (Valid update from exam)
+PUT {{baseUrl}}/api/books/102
+Content-Type: application/json
+
+{
+  "title": "The Alchemist - Revised Edition",
+  "author": "Paulo Coelho",
+  "genre": "Fiction",
+  "publishedYear": 1988,
+  "available": true
+}
+
+### 10. PUT update non-existent book
+PUT {{baseUrl}}/api/books/999
+Content-Type: application/json
+
+{
+  "title": "Ghost Book"
+}
+
+### 11. DELETE a book (Valid)
+DELETE {{baseUrl}}/api/books/103
+
+### 12. DELETE non-existent book
+DELETE {{baseUrl}}/api/books/999

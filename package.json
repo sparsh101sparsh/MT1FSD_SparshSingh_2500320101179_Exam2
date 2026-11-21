@@ -1,0 +1,15 @@
+{
+  "name": "library-book-management-api",
+  "version": "1.0.0",
+  "description": "SET A - Library Book Management REST API using Node.js and Express.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "author": "Sparsh Singh (2500320101179)",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

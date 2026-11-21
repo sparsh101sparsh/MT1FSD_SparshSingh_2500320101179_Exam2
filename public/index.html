@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SET A - Library Book Management REST API | Sparsh Singh</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --red: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 24px; max-width: 1000px; margin: 0 auto; line-height: 1.5; }
+    header { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    h1 { font-size: 20px; font-weight: 600; color: #fff; }
+    .student-badge { background: #0369a1; color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+    .card-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+    .method { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 4px; font-family: monospace; }
+    .method-get { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+    .method-post { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; }
+    .method-put { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+    .method-delete { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+    .endpoint { font-family: monospace; font-size: 14px; font-weight: 600; }
+    .btn { background: #0284c7; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+    .btn:hover { background: #0369a1; }
+    .btn-secondary { background: #334155; }
+    .btn-secondary:hover { background: #475569; }
+    .input-row { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+    input, textarea { background: #090d16; border: 1px solid var(--border); color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 13px; font-family: monospace; }
+    input:focus, textarea:focus { outline: none; border-color: var(--primary); }
+    textarea { width: 100%; min-height: 80px; resize: vertical; margin-bottom: 10px; }
+    pre { background: #090d16; border: 1px solid #1e293b; border-radius: 6px; padding: 12px; font-size: 13px; color: #bae6fd; overflow-x: auto; max-height: 200px; font-family: monospace; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>SET A: Library Book Management API</h1>
+      <p style="color: var(--muted); font-size: 13px; margin-top: 4px;">Node.js &amp; Express.js &bull; In-Memory Data Store</p>
+    </div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <span class="student-badge">Sparsh Singh (2500320101179)</span>
+      <button class="btn" onclick="getAllBooks()">Load All Books</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- 1. GET ALL BOOKS -->
+    <div class="card">
+      <div class="card-title">
+        <div>
+          <span class="method method-get">GET</span>
+          <span class="endpoint">/api/books</span>
+        </div>
+        <button class="btn" onclick="getAllBooks()">Fetch Records</button>
+      </div>
+      <pre id="output-get-all">// Click 'Fetch Records' to inspect book list</pre>
+    </div>
+
+    <!-- 2. FILTER BY AUTHOR -->
+    <div class="card">
+      <div class="card-title">
+        <div>
+          <span class="method method-get">GET</span>
+          <span class="endpoint">/api/books/filter?author=value</span>
+        </div>
+      </div>
+      <div class="input-row">
+        <input type="text" id="filter-author" placeholder="Author name (e.g. Kalam, Rowling, Paulo)" style="flex: 1;">
+        <button class="btn" onclick="filterBooks()">Search</button>
+      </div>
+      <pre id="output-filter">// Search by author name</pre>
+    </div>
+
+    <!-- 3. GET BY ID -->
+    <div class="card">
+      <div class="card-title">
+        <div>
+          <span class="method method-get">GET</span>
+          <span class="endpoint">/api/books/:id</span>
+        </div>
+      </div>
+      <div class="input-row">
+        <input type="number" id="get-id" placeholder="Book ID (e.g. 101)" style="width: 140px;">
+        <button class="btn" onclick="getBookById()">Find Book</button>
+      </div>
+      <pre id="output-get-id">// Enter an ID and click 'Find Book'</pre>
+    </div>
+
+    <!-- 4. POST NEW BOOK -->
+    <div class="card">
+      <div class="card-title">
+        <div>
+          <span class="method method-post">POST</span>
+          <span class="endpoint">/api/books</span>
+        </div>
+        <button class="btn" onclick="createBook()">Submit POST</button>
+      </div>
+      <textarea id="post-body">{
+  "title": "The Discovery of India",
+  "author": "Jawaharlal Nehru",
+  "genre": "History",
+  "publishedYear": 1946,
+  "available": true
+}</textarea>
+      <pre id="output-post">// POST response will appear here</pre>
+    </div>
+
+    <!-- 5. PUT UPDATE BOOK -->
+    <div class="card">
+      <div class="card-title">
+        <div>
+          <span class="method method-put">PUT</span>
+          <span class="endpoint">/api/books/:id</span>
+        </div>
+        <button class="btn" onclick="updateBook()">Submit PUT</button>
+      </div>
+      <div class="input-row">
+        <input type="number" id="put-id" value="102" placeholder="Book ID" style="width: 140px;">
+      </div>
+      <textarea id="put-body">{
+  "title": "The Alchemist - Revised Edition",
+  "author": "Paulo Coelho",
+  "genre": "Fiction",
+  "publishedYear": 1988,
+  "available": true
+}</textarea>
+      <pre id="output-put">// PUT response will appear here</pre>
+    </div>
+
+    <!-- 6. DELETE BOOK -->
+    <div class="card">
+      <div class="card-title">
+        <div>
+          <span class="method method-delete">DELETE</span>
+          <span class="endpoint">/api/books/:id</span>
+        </div>
+      </div>
+      <div class="input-row">
+        <input type="number" id="delete-id" placeholder="Book ID to delete (e.g. 103)" style="width: 180px;">
+        <button class="btn" style="background: #dc2626;" onclick="deleteBook()">Delete Record</button>
+      </div>
+      <pre id="output-delete">// DELETE response will appear here</pre>
+    </div>
+  </div>
+
+  <script>
+    async function showResult(elementId, response) {
+      const el = document.getElementById(elementId);
+      const data = await response.json().catch(() => ({}));
+      el.textContent = `Status: ${response.status} ${response.statusText}\n\n` + JSON.stringify(data, null, 2);
+    }
+
+    async function getAllBooks() {
+      const res = await fetch('/api/books');
+      showResult('output-get-all', res);
+    }
+
+    async function filterBooks() {
+      const author = document.getElementById('filter-author').value.trim();
+      const res = await fetch(`/api/books/filter?author=${encodeURIComponent(author)}`);
+      showResult('output-filter', res);
+    }
+
+    async function getBookById() {
+      const id = document.getElementById('get-id').value.trim();
+      const res = await fetch(`/api/books/${id}`);
+      showResult('output-get-id', res);
+    }
+
+    async function createBook() {
+      try {
+        const body = JSON.parse(document.getElementById('post-body').value);
+        const res = await fetch('/api/books', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        showResult('output-post', res);
+      } catch (err) {
+        document.getElementById('output-post').textContent = 'Error: Invalid JSON body in textarea';
+      }
+    }
+
+    async function updateBook() {
+      try {
+        const id = document.getElementById('put-id').value.trim();
+        const body = JSON.parse(document.getElementById('put-body').value);
+        const res = await fetch(`/api/books/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        showResult('output-put', res);
+      } catch (err) {
+        document.getElementById('output-put').textContent = 'Error: Invalid JSON body in textarea';
+      }
+    }
+
+    async function deleteBook() {
+      const id = document.getElementById('delete-id').value.trim();
+      const res = await fetch(`/api/books/${id}`, { method: 'DELETE' });
+      showResult('output-delete', res);
+    }
+
+    // Auto load on open
+    window.addEventListener('DOMContentLoaded', getAllBooks);
+  </script>
+</body>
+</html>

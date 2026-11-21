@@ -1,0 +1,226 @@
+{
+  "info": {
+    "_postman_id": "c1f7a40b-d26b-4395-8d2a-7e04f21db5a1",
+    "name": "SET A - Library Book Management API",
+    "description": "Postman collection for testing the Library Book Management REST API (SET A). Student: Sparsh Singh (2500320101179)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "0. Root Info",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": [""]
+        }
+      }
+    },
+    {
+      "name": "1. GET All Books",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/books",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "books"]
+        }
+      }
+    },
+    {
+      "name": "2. Filter by Author (Match)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/books/filter?author=kalam",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "books", "filter"],
+          "query": [
+            {
+              "key": "author",
+              "value": "kalam"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. Filter by Author (No Match)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/books/filter?author=Shakespeare",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "books", "filter"],
+          "query": [
+            {
+              "key": "author",
+              "value": "Shakespeare"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. GET Book By ID (Success - 101)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/books/101",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "books", "101"]
+        }
+      }
+    },
+    {
+      "name": "5. GET Book By ID (Not Found - 999)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/books/999",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "books", "999"]
+        }
+      }
+    },
+    {
+      "name": "6. POST New Book (Success - 201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"The Discovery of India\",\n  \"author\": \"Jawaharlal Nehru\",\n  \"genre\": \"History\",\n  \"publishedYear\": 1946,\n  \"available\": true\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/books",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "books"]
+        }
+      }
+    },
+    {
+      "name": "7. POST New Book (Invalid - 400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Incomplete Book Record\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/books",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "books"]
+        }
+      }
+    },
+    {
+      "name": "8. PUT Update Book (Success - 200)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"The Alchemist - Revised Edition\",\n  \"author\": \"Paulo Coelho\",\n  \"genre\": \"Fiction\",\n  \"publishedYear\": 1988,\n  \"available\": true\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/books/102",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "books", "102"]
+        }
+      }
+    },
+    {
+      "name": "9. PUT Update Book (Not Found - 404)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Non Existent\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/books/999",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "books", "999"]
+        }
+      }
+    },
+    {
+      "name": "10. DELETE Book (Success - 200)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/books/103",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "books", "103"]
+        }
+      }
+    },
+    {
+      "name": "11. DELETE Book (Not Found - 404)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/books/999",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "books", "999"]
+        }
+      }
+    }
+  ]
+}
